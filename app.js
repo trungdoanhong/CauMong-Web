@@ -98,10 +98,11 @@ wishesRef.orderByChild('timestamp').limitToLast(50).on('value', (snapshot) => {
         const wishElement = document.createElement('div');
         wishElement.className = 'wish-card';
         wishElement.innerHTML = `
-            <h3>${wish.name}</h3>
-            <p>${wish.content}</p>
-            <div class="footer">
-                <div class="time">🕒 ${time}</div>
+            <div class="header">
+                <div class="title-group">
+                    <h3>${wish.name}</h3>
+                    <div class="time">🕒 ${time}</div>
+                </div>
                 <div class="reactions">
                     <button class="reaction-btn heart ${reactions.heart > 0 ? 'active' : ''}" 
                         data-type="heart" data-count="${reactions.heart}">
@@ -113,6 +114,7 @@ wishesRef.orderByChild('timestamp').limitToLast(50).on('value', (snapshot) => {
                     </button>
                 </div>
             </div>
+            <p>${wish.content}</p>
         `;
 
         // Thêm event listeners cho nút reaction
