@@ -6,12 +6,30 @@ const firebaseConfig = {
     storageBucket: "caumong-com.firebasestorage.app",
     messagingSenderId: "1074032671065",
     appId: "1:1074032671065:web:e0f31c68abffb0fe59b448",
-    measurementId: "G-Q01T11BSNR"
+    measurementId: "G-Q01T11BSNR",
+    databaseURL: "https://caumong-com-default-rtdb.asia-southeast1.firebasedatabase.app"
 };
 
 // Initialize Firebase
-firebase.initializeApp(firebaseConfig);
-const db = firebase.firestore();
+try {
+    firebase.initializeApp(firebaseConfig);
+    console.log("Firebase đã được kết nối thành công!");
+    
+    // Kiểm tra kết nối Database
+    const dbRef = firebase.database().ref('wishes');
+    dbRef.limitToFirst(1).once('value')
+        .then(() => {
+            console.log("Realtime Database hoạt động tốt!");
+        })
+        .catch((error) => {
+            console.error("Lỗi kết nối Database:", error);
+        });
+} catch (error) {
+    console.error("Lỗi khởi tạo Firebase:", error);
+}
+
+const db = firebase.database();
+const wishesRef = db.ref('wishes');
 
 // DOM Elements
 const wishForm = document.getElementById('wishForm');
@@ -30,10 +48,10 @@ wishForm.addEventListener('submit', async (e) => {
     if (!wish) return;
 
     try {
-        await db.collection('wishes').add({
+        await wishesRef.push({
             name: name,
             content: wish,
-            timestamp: firebase.firestore.FieldValue.serverTimestamp()
+            timestamp: firebase.database.ServerValue.TIMESTAMP
         });
 
         nameInput.value = '';
@@ -45,25 +63,32 @@ wishForm.addEventListener('submit', async (e) => {
 });
 
 // Real-time wishes update
-db.collection('wishes')
-    .orderBy('timestamp', 'desc')
-    .onSnapshot((snapshot) => {
-        wishList.innerHTML = '';
-        
-        snapshot.forEach((doc) => {
-            const wish = doc.data();
-            const time = wish.timestamp ? new Date(wish.timestamp.toDate()).toLocaleString('vi-VN') : '';
-            
-            const wishElement = document.createElement('div');
-            wishElement.className = 'wish-card';
-            wishElement.innerHTML = `
-                <h3>${wish.name}</h3>
-                <p>${wish.content}</p>
-                <div class="time">${time}</div>
-            `;
-            
-            wishList.appendChild(wishElement);
+wishesRef.orderByChild('timestamp').limitToLast(50).on('value', (snapshot) => {
+    wishList.innerHTML = '';
+    
+    // Convert to array and reverse to show newest first
+    const wishes = [];
+    snapshot.forEach((childSnapshot) => {
+        wishes.push({
+            id: childSnapshot.key,
+            ...childSnapshot.val()
         });
-    }, (error) => {
-        console.error('Error getting wishes:', error);
-    }); 
+    });
+    wishes.reverse();
+
+    wishes.forEach((wish) => {
+        const time = wish.timestamp ? new Date(wish.timestamp).toLocaleString('vi-VN') : '';
+        
+        const wishElement = document.createElement('div');
+        wishElement.className = 'wish-card';
+        wishElement.innerHTML = `
+            <h3>${wish.name}</h3>
+            <p>${wish.content}</p>
+            <div class="time">${time}</div>
+        `;
+        
+        wishList.appendChild(wishElement);
+    });
+}, (error) => {
+    console.error('Error getting wishes:', error);
+}); 
