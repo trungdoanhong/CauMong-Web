@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Firebase Connection</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+        }
+        .status {
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 4px;
+        }
+        .success {
+            background: #d4edda;
+            color: #155724;
+        }
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        .test-area {
+            margin: 20px 0;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        button {
+            padding: 10px 20px;
+            margin: 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h1>Test Firebase Connection</h1>
+    <div id="connectionStatus" class="status"></div>
+
+    <div class="test-area">
+        <h2>Test Write Data</h2>
+        <button onclick="testWrite()">Test Write</button>
+        <div id="writeStatus" class="status"></div>
+    </div>
+
+    <div class="test-area">
+        <h2>Test Read Data</h2>
+        <button onclick="testRead()">Test Read</button>
+        <div id="readStatus" class="status"></div>
+        <pre id="readResult"></pre>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
+
+    <script>
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyB9-p8s-7iAAurl61jixIITs4G1dtzxwYI",
+            authDomain: "caumong-com.firebaseapp.com",
+            projectId: "caumong-com",
+            storageBucket: "caumong-com.firebasestorage.app",
+            messagingSenderId: "1074032671065",
+            appId: "1:1074032671065:web:e0f31c68abffb0fe59b448",
+            measurementId: "G-Q01T11BSNR",
+            databaseURL: "https://caumong-com-default-rtdb.asia-southeast1.firebasedatabase.app"
+        };
+
+        // Initialize Firebase
+        try {
+            firebase.initializeApp(firebaseConfig);
+            document.getElementById('connectionStatus').innerHTML = 
+                'Firebase đã được kết nối thành công!';
+            document.getElementById('connectionStatus').className = 'status success';
+        } catch (error) {
+            document.getElementById('connectionStatus').innerHTML = 
+                'Lỗi kết nối Firebase: ' + error.message;
+            document.getElementById('connectionStatus').className = 'status error';
+        }
+
+        const db = firebase.database();
+
+        // Test write function
+        async function testWrite() {
+            const writeStatus = document.getElementById('writeStatus');
+            try {
+                const testRef = db.ref('test');
+                await testRef.push({
+                    message: 'Test message',
+                    timestamp: Date.now()
+                });
+                writeStatus.innerHTML = 'Ghi dữ liệu thành công!';
+                writeStatus.className = 'status success';
+            } catch (error) {
+                writeStatus.innerHTML = 'Lỗi khi ghi dữ liệu: ' + error.message;
+                writeStatus.className = 'status error';
+            }
+        }
+
+        // Test read function
+        async function testRead() {
+            const readStatus = document.getElementById('readStatus');
+            const readResult = document.getElementById('readResult');
+            try {
+                const testRef = db.ref('test');
+                const snapshot = await testRef.limitToLast(5).once('value');
+                const data = snapshot.val();
+                readStatus.innerHTML = 'Đọc dữ liệu thành công!';
+                readStatus.className = 'status success';
+                readResult.innerHTML = JSON.stringify(data, null, 2);
+            } catch (error) {
+                readStatus.innerHTML = 'Lỗi khi đọc dữ liệu: ' + error.message;
+                readStatus.className = 'status error';
+                readResult.innerHTML = '';
+            }
+        }
+    </script>
+</body>
+</html> 

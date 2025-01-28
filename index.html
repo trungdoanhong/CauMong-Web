@@ -11,8 +11,14 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <div class="background">
+        <div class="clouds"></div>
+        <div class="lanterns"></div>
+    </div>
+
     <div class="container">
         <header>
+            <div class="logo">2024</div>
             <h1>Bức Tường Điều Ước</h1>
             <p>Nơi gửi gắm những điều ước và lời chúc của bạn</p>
         </header>
@@ -25,7 +31,10 @@
                 <div class="form-group">
                     <textarea id="wish" placeholder="Viết điều ước của bạn..." required class="input-field"></textarea>
                 </div>
-                <button type="submit" class="submit-button">Gửi điều ước</button>
+                <button type="submit" class="submit-button">
+                    <span class="button-text">Gửi điều ước</span>
+                    <div class="button-decoration"></div>
+                </button>
             </form>
 
             <div id="wishList" class="wish-list">
