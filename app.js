@@ -10,34 +10,22 @@ const firebaseConfig = {
     databaseURL: "https://caumong-com-default-rtdb.asia-southeast1.firebasedatabase.app"
 };
 
-console.log("Bắt đầu khởi tạo Firebase...");
-
 // Initialize Firebase
 try {
     firebase.initializeApp(firebaseConfig);
-    console.log("Firebase đã được khởi tạo!");
+    console.log("Firebase đã được kết nối thành công!");
     
     // Kiểm tra kết nối Database
-    console.log("Đang kiểm tra kết nối đến Realtime Database...");
     const dbRef = firebase.database().ref('wishes');
     dbRef.limitToFirst(1).once('value')
         .then(() => {
-            console.log("✅ Realtime Database hoạt động tốt!");
+            console.log("Realtime Database hoạt động tốt!");
         })
         .catch((error) => {
-            console.error("❌ Lỗi kết nối Database:", error);
-            alert("Không thể kết nối đến database. Vui lòng thử lại sau!");
+            console.error("Lỗi kết nối Database:", error);
         });
 } catch (error) {
-    console.error("❌ Lỗi khởi tạo Firebase:", error);
-    alert("Không thể khởi tạo Firebase. Vui lòng thử lại sau!");
-}
-
-// Kiểm tra xem firebase có được load không
-if (typeof firebase === 'undefined') {
-    console.error("❌ Firebase SDK chưa được load!");
-} else {
-    console.log("✅ Firebase SDK đã được load!");
+    console.error("Lỗi khởi tạo Firebase:", error);
 }
 
 const db = firebase.database();
