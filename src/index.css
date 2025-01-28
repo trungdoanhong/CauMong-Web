@@ -3,7 +3,9 @@
 @tailwind utilities;
 
 body {
-  background-color: #f3f4f6;
+  @apply bg-gray-50 text-gray-800;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen,
+    Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 }
 
 .wish-container {
@@ -11,13 +13,43 @@ body {
 }
 
 .wish-card {
-  @apply bg-white rounded-lg shadow-md p-6 mb-4 transform transition duration-200 hover:shadow-lg;
+  @apply bg-white rounded-lg shadow-md p-6 mb-4 transform transition duration-300 hover:shadow-lg hover:-translate-y-1;
 }
 
 .input-field {
-  @apply w-full rounded-lg border-gray-300 focus:border-primary focus:ring-primary;
+  @apply w-full rounded-lg border-gray-300 focus:border-primary focus:ring-primary transition duration-200;
 }
 
 .submit-button {
-  @apply bg-primary text-white px-6 py-2 rounded-lg hover:bg-primary/90 transition duration-200;
+  @apply bg-primary text-white px-6 py-2 rounded-lg hover:bg-primary/90 transition duration-200 
+         transform hover:scale-105 active:scale-95 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2;
+}
+
+/* Animation cho wish cards mới */
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.wish-card-new {
+  animation: slideIn 0.5s ease-out forwards;
+}
+
+/* Scrollbar tùy chỉnh */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-gray-100;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-primary/50 rounded-full hover:bg-primary/70;
 } 
