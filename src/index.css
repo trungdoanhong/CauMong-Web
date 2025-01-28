@@ -1,0 +1,23 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  background-color: #f3f4f6;
+}
+
+.wish-container {
+  @apply max-w-4xl mx-auto p-4;
+}
+
+.wish-card {
+  @apply bg-white rounded-lg shadow-md p-6 mb-4 transform transition duration-200 hover:shadow-lg;
+}
+
+.input-field {
+  @apply w-full rounded-lg border-gray-300 focus:border-primary focus:ring-primary;
+}
+
+.submit-button {
+  @apply bg-primary text-white px-6 py-2 rounded-lg hover:bg-primary/90 transition duration-200;
+} 

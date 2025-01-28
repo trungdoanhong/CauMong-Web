@@ -1,0 +1,3 @@
+- Trang web để mọi người có thể gửi lời chúc và cầu mong của mình lên
+- Không cần đăng nhập vẫn có thể gửi lời chúc
+- Khu vực gửi lời chúc hoạt động giống như là một chatbot chung
