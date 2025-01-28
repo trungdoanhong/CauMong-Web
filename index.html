@@ -1,1 +1,42 @@
-<!doctype html><html lang="vi"><head><meta charset="utf-8"/><link rel="icon" href="/CauMong-Web/favicon.ico"/><meta name="viewport" content="width=device-width,initial-scale=1"/><meta name="theme-color" content="#4F46E5"/><meta name="description" content="Nơi gửi gắm những điều ước và lời chúc của bạn"/><meta property="og:title" content="Bức Tường Điều Ước"/><meta property="og:description" content="Nơi gửi gắm những điều ước và lời chúc của bạn"/><meta property="og:type" content="website"/><title>Bức Tường Điều Ước</title><script defer="defer" src="/CauMong-Web/static/js/main.da8dc6bf.js"></script><link href="/CauMong-Web/static/css/main.398b8410.css" rel="stylesheet"></head><body><noscript>You need to enable JavaScript to run this app.</noscript><div id="root"></div></body></html>
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bức Tường Điều Ước</title>
+    <meta name="description" content="Nơi gửi gắm những điều ước và lời chúc của bạn">
+    <meta property="og:title" content="Bức Tường Điều Ước">
+    <meta property="og:description" content="Nơi gửi gắm những điều ước và lời chúc của bạn">
+    <meta property="og:type" content="website">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Bức Tường Điều Ước</h1>
+            <p>Nơi gửi gắm những điều ước và lời chúc của bạn</p>
+        </header>
+
+        <main>
+            <form id="wishForm" class="wish-form">
+                <div class="form-group">
+                    <input type="text" id="name" placeholder="Tên của bạn (không bắt buộc)" class="input-field">
+                </div>
+                <div class="form-group">
+                    <textarea id="wish" placeholder="Viết điều ước của bạn..." required class="input-field"></textarea>
+                </div>
+                <button type="submit" class="submit-button">Gửi điều ước</button>
+            </form>
+
+            <div id="wishList" class="wish-list">
+                <!-- Wishes will be inserted here -->
+            </div>
+        </main>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+    <script src="app.js"></script>
+</body>
+</html> 
