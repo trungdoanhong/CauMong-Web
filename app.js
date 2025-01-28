@@ -34,20 +34,31 @@ const wishesRef = db.ref('wishes');
 // DOM Elements
 const wishForm = document.getElementById('wishForm');
 const wishList = document.getElementById('wishList');
+const nameInput = document.getElementById('name');
+
+// Load tên đã lưu khi trang web được mở
+document.addEventListener('DOMContentLoaded', () => {
+    const savedName = localStorage.getItem('wishName');
+    if (savedName) {
+        nameInput.value = savedName;
+    }
+});
 
 // Add new wish
 wishForm.addEventListener('submit', async (e) => {
     e.preventDefault();
     
-    const nameInput = document.getElementById('name');
-    const wishInput = document.getElementById('wish');
-    
     const name = nameInput.value.trim() || 'Ẩn danh';
-    const wish = wishInput.value.trim();
+    const wish = document.getElementById('wish').value.trim();
     
     if (!wish) return;
 
     try {
+        // Lưu tên vào localStorage nếu không phải Ẩn danh
+        if (name !== 'Ẩn danh') {
+            localStorage.setItem('wishName', name);
+        }
+
         await wishesRef.push({
             name: name,
             content: wish,
@@ -58,8 +69,9 @@ wishForm.addEventListener('submit', async (e) => {
             }
         });
 
-        nameInput.value = '';
-        wishInput.value = '';
+        document.getElementById('wish').value = '';
+        // Không xóa tên người dùng sau khi gửi
+        // nameInput.value = '';
     } catch (error) {
         console.error('Error adding wish:', error);
         alert('Có lỗi xảy ra khi gửi điều ước. Vui lòng thử lại!');
@@ -148,4 +160,88 @@ wishesRef.orderByChild('timestamp').limitToLast(50).on('value', (snapshot) => {
     });
 }, (error) => {
     console.error('Error getting wishes:', error);
+});
+
+// Feedback handling
+const feedbackBtn = document.getElementById('feedbackBtn');
+const feedbackModal = document.getElementById('feedbackModal');
+const closeFeedback = document.getElementById('closeFeedback');
+const feedbackForm = document.getElementById('feedbackForm');
+const feedbackMessages = document.getElementById('feedbackMessages');
+const feedbackRef = db.ref('feedback');
+
+// Load tên từ localStorage khi mở form
+feedbackBtn.addEventListener('click', () => {
+    feedbackModal.classList.add('active');
+    // Load tên đã lưu
+    const savedName = localStorage.getItem('feedbackName');
+    if (savedName) {
+        nameInput.value = savedName;
+    }
+});
+
+closeFeedback.addEventListener('click', () => {
+    feedbackModal.classList.remove('active');
+});
+
+// Click outside to close
+document.addEventListener('click', (e) => {
+    if (!feedbackModal.contains(e.target) && !feedbackBtn.contains(e.target)) {
+        feedbackModal.classList.remove('active');
+    }
+});
+
+// Hiển thị feedback realtime
+feedbackRef.orderByChild('timestamp').limitToLast(50).on('value', (snapshot) => {
+    feedbackMessages.innerHTML = '';
+    
+    const messages = [];
+    snapshot.forEach((childSnapshot) => {
+        messages.push({
+            id: childSnapshot.key,
+            ...childSnapshot.val()
+        });
+    });
+    messages.reverse();
+
+    messages.forEach((msg) => {
+        const time = msg.timestamp ? new Date(msg.timestamp).toLocaleString('vi-VN', {
+            hour: '2-digit',
+            minute: '2-digit',
+            day: 'numeric',
+            month: 'numeric'
+        }) : '';
+
+        const messageElement = document.createElement('div');
+        messageElement.className = 'feedback-message received';
+        messageElement.innerHTML = `
+            <div class="message-content">${msg.content}</div>
+            <div class="message-time">${time}</div>
+        `;
+        
+        feedbackMessages.appendChild(messageElement);
+    });
+
+    // Scroll to bottom
+    feedbackMessages.scrollTop = feedbackMessages.scrollHeight;
+});
+
+// Cập nhật phần submit feedback
+feedbackForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    
+    const feedbackText = document.getElementById('feedbackText').value.trim();
+    if (!feedbackText) return;
+
+    try {
+        await feedbackRef.push({
+            content: feedbackText,
+            timestamp: firebase.database.ServerValue.TIMESTAMP
+        });
+
+        feedbackForm.reset();
+    } catch (error) {
+        console.error('Error sending feedback:', error);
+        alert('Có lỗi xảy ra khi gửi góp ý. Vui lòng thử lại!');
+    }
 }); 

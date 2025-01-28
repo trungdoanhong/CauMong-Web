@@ -363,4 +363,234 @@ textarea.input-field {
         font-size: 0.95rem;
         padding: 0.3rem 0;
     }
+}
+
+/* Feedback button */
+.feedback-btn {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    width: 3.5rem;
+    height: 3.5rem;
+    border-radius: 50%;
+    background: white;
+    border: none;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    cursor: pointer;
+    transition: all 0.3s;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.feedback-btn span {
+    font-size: 1.5rem;
+}
+
+.feedback-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+}
+
+/* Feedback modal */
+.feedback-modal {
+    display: none;
+    position: fixed;
+    bottom: 6rem;
+    right: 2rem;
+    width: 320px;
+    height: 420px;
+    background: white;
+    border-radius: 1.2rem;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+    z-index: 1000;
+    animation: slideUp 0.3s ease-out;
+}
+
+.feedback-modal.active {
+    display: block;
+}
+
+.feedback-content {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    padding: 1rem;
+}
+
+.feedback-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 0.8rem;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.feedback-header h3 {
+    color: var(--primary-color);
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin: 0;
+}
+
+.close-btn {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    color: #666;
+    cursor: pointer;
+    padding: 0.2rem;
+    opacity: 0.7;
+    transition: opacity 0.2s;
+}
+
+.close-btn:hover {
+    opacity: 1;
+}
+
+.feedback-messages {
+    flex-grow: 1;
+    overflow-y: auto;
+    padding: 1rem 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+}
+
+.feedback-message {
+    padding: 0.8rem 1rem;
+    border-radius: 1rem;
+    max-width: 85%;
+    animation: slideIn 0.3s ease-out;
+    line-height: 1.4;
+    font-size: 0.95rem;
+    position: relative;
+}
+
+.feedback-message .message-content {
+    margin-bottom: 0.3rem;
+    word-break: break-word;
+}
+
+.feedback-message .message-time {
+    font-size: 0.75rem;
+    opacity: 0.7;
+    position: absolute;
+    bottom: -1.2rem;
+    left: 0.3rem;
+}
+
+.feedback-message.received {
+    background: #f0f2f5;
+    color: #1a1a1a;
+    margin-right: auto;
+    border-bottom-left-radius: 0.3rem;
+    margin-bottom: 1.2rem;
+}
+
+.feedback-form {
+    margin-top: auto;
+    padding-top: 0.8rem;
+    border-top: 1px solid rgba(0, 0, 0, 0.08);
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+}
+
+.feedback-input {
+    width: 100%;
+    height: 80px;
+    padding: 0.8rem;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 0.8rem;
+    resize: none;
+    font-size: 0.95rem;
+    font-family: inherit;
+    background: #f8f9fa;
+    transition: all 0.2s;
+}
+
+.feedback-input:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    background: white;
+}
+
+.feedback-submit {
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    padding: 0.8rem;
+    border-radius: 0.8rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-weight: 500;
+    font-size: 0.95rem;
+}
+
+.feedback-submit:hover {
+    background: var(--secondary-color);
+    transform: translateY(-1px);
+}
+
+/* Custom scrollbar cho feedback messages */
+.feedback-messages::-webkit-scrollbar {
+    width: 6px;
+}
+
+.feedback-messages::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.feedback-messages::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.1);
+    border-radius: 3px;
+}
+
+.feedback-messages:hover::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.2);
+}
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+    .feedback-btn {
+        bottom: 1rem;
+        right: 1rem;
+        width: 3rem;
+        height: 3rem;
+    }
+
+    .feedback-modal {
+        width: calc(100% - 2rem);
+        height: 50vh;
+        max-width: 320px;
+        bottom: 5rem;
+    }
+
+    .feedback-message {
+        font-size: 0.9rem;
+        padding: 0.7rem 0.9rem;
+    }
+
+    .feedback-input {
+        height: 60px;
+    }
+}
+
+.message-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.4rem;
+    font-size: 0.85rem;
+}
+
+.message-time {
+    color: #666;
+    opacity: 0.8;
+}
+
+.message-content {
+    line-height: 1.4;
 } 

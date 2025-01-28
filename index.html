@@ -59,6 +59,32 @@
         </div>
     </div>
 
+    <!-- Thêm vào cuối body, trước các script -->
+    <button id="feedbackBtn" class="feedback-btn" title="Góp ý">
+        <span>💡</span>
+    </button>
+
+    <div id="feedbackModal" class="feedback-modal">
+        <div class="feedback-content">
+            <div class="feedback-header">
+                <h3>Góp ý</h3>
+                <button class="close-btn" id="closeFeedback">×</button>
+            </div>
+            <div class="feedback-messages" id="feedbackMessages">
+                <!-- Feedback messages will be inserted here -->
+            </div>
+            <form id="feedbackForm" class="feedback-form">
+                <textarea 
+                    id="feedbackText" 
+                    class="feedback-input" 
+                    placeholder="Nhập góp ý của bạn..." 
+                    required
+                ></textarea>
+                <button type="submit" class="feedback-submit">Gửi góp ý</button>
+            </form>
+        </div>
+    </div>
+
     <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
