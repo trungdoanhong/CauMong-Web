@@ -66,7 +66,6 @@ wishForm.addEventListener('submit', async (e) => {
 wishesRef.orderByChild('timestamp').limitToLast(50).on('value', (snapshot) => {
     wishList.innerHTML = '';
     
-    // Convert to array and reverse to show newest first
     const wishes = [];
     snapshot.forEach((childSnapshot) => {
         wishes.push({
@@ -77,7 +76,13 @@ wishesRef.orderByChild('timestamp').limitToLast(50).on('value', (snapshot) => {
     wishes.reverse();
 
     wishes.forEach((wish) => {
-        const time = wish.timestamp ? new Date(wish.timestamp).toLocaleString('vi-VN') : '';
+        const time = wish.timestamp ? new Date(wish.timestamp).toLocaleString('vi-VN', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit'
+        }) : '';
         
         const wishElement = document.createElement('div');
         wishElement.className = 'wish-card';

@@ -19,6 +19,7 @@ body {
     color: var(--text-color);
     min-height: 100vh;
     background: linear-gradient(180deg, #ff4d4f 0%, #ff7a45 100%);
+    overflow: hidden;
 }
 
 .background {
@@ -43,15 +44,25 @@ body {
 }
 
 .container {
-    max-width: 800px;
+    max-width: 1200px;
     margin: 0 auto;
     padding: 1rem;
+    height: 100vh;
+    display: grid;
+    grid-template-columns: 350px 1fr;
+    gap: 1rem;
+}
+
+/* Cột bên trái */
+.left-column {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
 }
 
 header {
     text-align: center;
-    padding: 2rem 0;
-    margin-bottom: 2rem;
+    padding: 1rem 0;
 }
 
 .logo {
@@ -77,12 +88,18 @@ header {
 
 .wish-form {
     background: var(--card-bg);
-    padding: 2rem;
+    padding: 1.5rem;
     border-radius: 1.5rem;
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
     backdrop-filter: blur(10px);
-    margin-bottom: 2rem;
     border: 1px solid rgba(255, 255, 255, 0.2);
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group {
+    margin-bottom: 1rem;
 }
 
 .input-field {
@@ -131,42 +148,87 @@ textarea.input-field {
     transform: translateY(0);
 }
 
+/* Cột bên phải */
+.right-column {
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.wish-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding-right: 1rem;
+    overflow-y: auto;
+    height: 100vh;
+    
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 255, 255, 0.3) transparent;
+}
+
 .wish-card {
     background: var(--card-bg);
     padding: 1.5rem;
     border-radius: 1rem;
     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
-    margin-bottom: 1rem;
     animation: slideIn 0.3s ease-out;
     border: 1px solid rgba(255, 255, 255, 0.2);
     backdrop-filter: blur(10px);
+    transition: transform 0.2s;
+    max-width: 100%;
+}
+
+.wish-card:hover {
+    transform: translateY(-2px);
 }
 
 .wish-card h3 {
     color: var(--primary-color);
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.8rem;
     font-size: 1.2rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.wish-card h3::before {
+    content: "🏮";
+    font-size: 1.4rem;
 }
 
 .wish-card p {
     color: #333;
     line-height: 1.6;
+    flex-grow: 1;
+    font-size: 1.1rem;
+    white-space: pre-wrap;
+    word-break: break-word;
 }
 
 .wish-card .time {
     font-size: 0.875rem;
     color: #666;
-    margin-top: 0.5rem;
+    margin-top: 1rem;
+    padding-top: 0.8rem;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.wish-card .time::before {
+    content: "🕒";
 }
 
 @keyframes slideIn {
     from {
         opacity: 0;
-        transform: translateY(20px);
+        transform: translateY(20px) scale(0.95);
     }
     to {
         opacity: 1;
-        transform: translateY(0);
+        transform: translateY(0) scale(1);
     }
 }
 
@@ -188,9 +250,19 @@ textarea.input-field {
     }
 }
 
-@media (max-width: 640px) {
+/* Mobile Responsive */
+@media (max-width: 768px) {
     .container {
-        padding: 1rem;
+        grid-template-columns: 1fr;
+        padding: 0.5rem;
+    }
+
+    .left-column {
+        gap: 0.5rem;
+    }
+
+    header {
+        padding: 0.5rem 0;
     }
 
     .logo {
@@ -198,6 +270,11 @@ textarea.input-field {
     }
 
     .wish-form {
-        padding: 1.5rem;
+        padding: 1rem;
+    }
+
+    .wish-list {
+        padding: 0.5rem;
+        height: calc(100vh - 400px);
     }
 } 
