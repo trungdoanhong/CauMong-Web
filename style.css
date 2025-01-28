@@ -206,19 +206,81 @@ textarea.input-field {
     word-break: break-word;
 }
 
-.wish-card .time {
-    font-size: 0.875rem;
-    color: #666;
+.wish-card .footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     margin-top: 1rem;
     padding-top: 0.8rem;
     border-top: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.wish-card .time {
+    font-size: 0.875rem;
+    color: #666;
     display: flex;
     align-items: center;
     gap: 0.5rem;
+    margin-top: 0;
+    padding-top: 0;
+    border-top: none;
 }
 
 .wish-card .time::before {
     content: "🕒";
+}
+
+.reactions {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 0;
+    padding-top: 0;
+    border-top: none;
+}
+
+.reaction-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+    padding: 0.5rem 1rem;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 2rem;
+    background: white;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-size: 0.9rem;
+}
+
+.reaction-btn span {
+    min-width: 1rem;
+    text-align: center;
+}
+
+.reaction-btn:hover {
+    background: #f5f5f5;
+    transform: translateY(-1px);
+}
+
+.reaction-btn.active {
+    background: #fff0f0;
+    border-color: var(--primary-color);
+    color: var(--primary-color);
+}
+
+.reaction-btn.pop {
+    animation: pop 0.2s ease-out;
+}
+
+@keyframes pop {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.2);
+    }
+    100% {
+        transform: scale(1);
+    }
 }
 
 @keyframes slideIn {
@@ -276,5 +338,15 @@ textarea.input-field {
     .wish-list {
         padding: 0.5rem;
         height: calc(100vh - 400px);
+    }
+
+    .reactions {
+        padding-top: 0.5rem;
+        margin-top: 0.5rem;
+    }
+
+    .reaction-btn {
+        padding: 0.4rem 0.8rem;
+        font-size: 0.8rem;
     }
 } 

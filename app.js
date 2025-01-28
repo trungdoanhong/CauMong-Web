@@ -51,7 +51,11 @@ wishForm.addEventListener('submit', async (e) => {
         await wishesRef.push({
             name: name,
             content: wish,
-            timestamp: firebase.database.ServerValue.TIMESTAMP
+            timestamp: firebase.database.ServerValue.TIMESTAMP,
+            reactions: {
+                heart: 0,
+                haha: 0
+            }
         });
 
         nameInput.value = '';
@@ -84,13 +88,59 @@ wishesRef.orderByChild('timestamp').limitToLast(50).on('value', (snapshot) => {
             minute: '2-digit'
         }) : '';
         
+        // Đảm bảo reactions luôn có giá trị mặc định
+        const reactions = {
+            heart: 0,
+            haha: 0,
+            ...(wish.reactions || {}) // Spread operator để ghi đè giá trị mặc định nếu có
+        };
+        
         const wishElement = document.createElement('div');
         wishElement.className = 'wish-card';
         wishElement.innerHTML = `
             <h3>${wish.name}</h3>
             <p>${wish.content}</p>
-            <div class="time">${time}</div>
+            <div class="footer">
+                <div class="time">🕒 ${time}</div>
+                <div class="reactions">
+                    <button class="reaction-btn heart ${reactions.heart > 0 ? 'active' : ''}" 
+                        data-type="heart" data-count="${reactions.heart}">
+                        ❤️ <span>${reactions.heart}</span>
+                    </button>
+                    <button class="reaction-btn haha ${reactions.haha > 0 ? 'active' : ''}" 
+                        data-type="haha" data-count="${reactions.haha}">
+                        😆 <span>${reactions.haha}</span>
+                    </button>
+                </div>
+            </div>
         `;
+
+        // Thêm event listeners cho nút reaction
+        const reactionBtns = wishElement.querySelectorAll('.reaction-btn');
+        reactionBtns.forEach(btn => {
+            btn.addEventListener('click', async () => {
+                const type = btn.dataset.type;
+                const currentCount = parseInt(btn.dataset.count) || 0;
+                const newCount = currentCount + 1;
+                
+                try {
+                    await wishesRef.child(wish.id).child('reactions').update({
+                        [type]: newCount
+                    });
+                    
+                    // Cập nhật UI
+                    btn.dataset.count = newCount;
+                    btn.querySelector('span').textContent = newCount;
+                    btn.classList.add('active');
+                    
+                    // Thêm hiệu ứng animation
+                    btn.classList.add('pop');
+                    setTimeout(() => btn.classList.remove('pop'), 200);
+                } catch (error) {
+                    console.error('Error updating reaction:', error);
+                }
+            });
+        });
         
         wishList.appendChild(wishElement);
     });
